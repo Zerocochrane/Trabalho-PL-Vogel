@@ -1,10 +1,48 @@
+import collections
 from collections import defaultdict
- 
+
+# Instancia os dicionarios
+demandDict = {}
+supplyDict = {}
+costsDict = {}
+costsLine = {}
+demandTotal = 0
+supplyTotal = 0
+numFabricas = input("Digite quantas fontes de suprimento: ")
+numLojas = input("Digite quantas fontes de destino: ")
+
+# Recebe os valores do usuario e os coloca nos dicionarios
+ding = 27 - numFabricas
+for i in range(27, ding, -1):
+    n = raw_input("Digite a quantidade de material disponivel na fonte " + str(28-i) + " : ")
+    supplyTotal = supplyTotal + int(n)
+    supplyTotal = int(n)
+    supplyDict[chr(i+63)] = int(n)
+
+for i in range(int(numLojas)):
+    m = input("Digite a quantidade de material que as lojas querem " + str(i+1) + " : ")
+    demandTotal = demandTotal + int(m)
+    demandDict[chr(i+65)] = int(m)
+
+
+dong = 27 - numFabricas
+for i in range(27, dong, -1):
+    for j in range(int(numLojas)):
+        b = input("Digite o custo entre os caminhos" + str(28-i) + "-" + str(j+1) + ": ")
+        costsLine[chr(i+65)] = int(b)
+        print costsLine
+    print costsLine
+    costsDict[chr(117-j)] = costsLine
+    costsLine.clear()
+
+print costsDict
+
 costs  = {'W': {'A': 16, 'B': 16, 'C': 13, 'D': 22, 'E': 17},
           'X': {'A': 14, 'B': 14, 'C': 13, 'D': 19, 'E': 15},
           'Y': {'A': 19, 'B': 19, 'C': 20, 'D': 23, 'E': 50},
           'Z': {'A': 50, 'B': 12, 'C': 50, 'D': 15, 'E': 11}}
 demand = {'A': 30, 'B': 20, 'C': 70, 'D': 30, 'E': 60}
+
 cols = sorted(demand.iterkeys())
 supply = {'W': 50, 'X': 60, 'Y': 50, 'Z': 50}
 res = dict((k, defaultdict(int)) for k in costs)
