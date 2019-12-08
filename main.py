@@ -1,12 +1,13 @@
 import collections
 from collections import defaultdict
 
-# Instancia os dicionarios
 demandDict = {}
 supplyDict = {}
 costsDict = {}
 demandTotal = 0
 supplyTotal = 0
+dummyDemand = 0
+dummySupply = 0
 numFabricas = input("Digite quantas fontes de suprimento: ")
 numLojas = input("Digite quantas fontes de destino: ")
 
@@ -15,13 +16,24 @@ ding = 27 - numFabricas
 for i in range(27, ding, -1):
     n = raw_input("Digite a quantidade de material disponivel na fonte " + str(28-i) + " : ")
     supplyTotal = supplyTotal + int(n)
-    supplyTotal = int(n)
     supplyDict[chr(i+63)] = int(n)
 
 for i in range(int(numLojas)):
     m = input("Digite a quantidade de material que as lojas querem " + str(i+1) + " : ")
     demandTotal = demandTotal + int(m)
     demandDict[chr(i+65)] = int(m)
+
+if demandTotal < supplyTotal:
+    t = supplyTotal - demandTotal
+    demandTotal = demandTotal + t
+    demandDict[chr(numLojas+65)] = t
+    dummyDemand = 1
+
+if supplyTotal < demandTotal:
+    t = demandTotal - supplyTotal
+    supplyTotal = supplyTotal + t
+    supplyDict[chr(90-numFabricas)] = t
+    dummySupply = 1
 
 
 dong = 27 - numFabricas
@@ -30,14 +42,15 @@ for i in range(27, dong, -1):
     for j in range(int(numLojas)):
         b = input("Digite o custo entre os caminhos" + str(28-i) + "-" + str(j+1) + ": ")
         temp[chr(j+65)] = int(b)
+    if dummyDemand == 1:
+        temp[chr(numLojas+65)] = 99999999
     costsDict[chr(i+63)] = temp
 
-# costs  = {'W': {'A': 16, 'B': 16, 'C': 13, 'D': 22, 'E': 17},
-#           'X': {'A': 14, 'B': 14, 'C': 13, 'D': 19, 'E': 15},
-#           'Y': {'A': 19, 'B': 19, 'C': 20, 'D': 23, 'E': 50},
-#           'Z': {'A': 50, 'B': 12, 'C': 50, 'D': 15, 'E': 11}}
-# demand = {'A': 30, 'B': 20, 'C': 70, 'D': 30, 'E': 60}
-# supply = {'W': 50, 'X': 60, 'Y': 50, 'Z': 50}
+if dummySupply == 1:
+    temp = {}
+    for i in range(int(numLojas)):
+        temp[chr(i+65)] = 99999999
+    costsDict[chr(90-numFabricas)] = temp
 
 cols = sorted(demandDict.iterkeys())
 res = dict((k, defaultdict(int)) for k in costsDict)
@@ -78,13 +91,17 @@ for n in cols:
     print "\t", n,
 print
 cost = 0
+
 for g in sorted(costsDict):
     print g, "\t",
     for n in cols:
         y = res[g][n]
         if y != 0:
             print y,
-        cost += y * costsDict[g][n]
+        if costsDict[g][n] != 99999999:
+            cost += y * costsDict[g][n]
         print "\t",
     print
+
 print "\n\nTotal Cost = ", cost
+print f
