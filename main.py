@@ -19,7 +19,7 @@ for i in range(27, ding, -1):
     supplyDict[chr(i+63)] = int(n)
 
 for i in range(int(numLojas)):
-    m = input("Digite a quantidade de material que as lojas querem " + str(i+1) + " : ")
+    m = input("Digite a quantidade de material que a loja " + str(i+1) + " quer : ")
     demandTotal = demandTotal + int(m)
     demandDict[chr(i+65)] = int(m)
 
@@ -40,7 +40,7 @@ dong = 27 - numFabricas
 for i in range(27, dong, -1):
     temp = {}
     for j in range(int(numLojas)):
-        b = input("Digite o custo entre os caminhos" + str(28-i) + "-" + str(j+1) + ": ")
+        b = input("Digite o custo entre os caminhos " + chr(i+63) + " - " + chr(j+65) + ": ")
         temp[chr(j+65)] = int(b)
     if dummyDemand == 1:
         temp[chr(numLojas+65)] = 99999999
@@ -104,4 +104,3 @@ for g in sorted(costsDict):
     print
 
 print "\n\nTotal Cost = ", cost
-print f
