@@ -9,9 +9,8 @@ supplyTotal = 0
 dummyDemand = 0
 dummySupply = 0
 numFabricas = input("Digite quantas fontes de suprimento: ")
-numLojas = input("Digite quantas fontes de destino: ")
+numLojas = input("Digite quantos destinos existem: ")
 
-# Recebe os valores do usuario e os coloca nos dicionarios
 ding = 27 - numFabricas
 for i in range(27, ding, -1):
     n = raw_input("Digite a quantidade de material disponivel na fonte " + str(28-i) + " : ")
@@ -60,6 +59,7 @@ for x in supplyDict:
 for x in demandDict:
     g[x] = sorted(costsDict.iterkeys(), key=lambda g: costsDict[g][x])
  
+count = 1
 while g:
     d = {}
     for x in demandDict:
@@ -86,21 +86,27 @@ while g:
                 g[k].remove(f)
         del g[f]
         del supplyDict[f]
+        print
+        print "Interacao numero " + str(count) + " :"
+        for n in cols:
+            print "\t", n,
+        print
+        for a in sorted(costsDict):
+            print a, "\t",
+            for b in cols:
+                y = res[a][b]
+                if y != 0:
+                    print y,
+                print "\t",
+            print
+    count= count + 1
  
-for n in cols:
-    print "\t", n,
-print
 cost = 0
 
 for g in sorted(costsDict):
-    print g, "\t",
     for n in cols:
         y = res[g][n]
-        if y != 0:
-            print y,
         if costsDict[g][n] != 99999999:
             cost += y * costsDict[g][n]
-        print "\t",
-    print
 
-print "\n\nTotal Cost = ", cost
+print "\n\nCusto total = ", cost
